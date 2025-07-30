@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🦁 U8 Maroon Lions 🏉</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1🦁 >U8 Maroon Lions 🏉 Portraits</h1>
+
+<!-- Add links to other repositories  class="active"   -->
+<ul class="nav-list">
+
+  <li><a href="https://mariebridgwood.github.io/Gallery">Home</a></li>
+
+</ul>
+
+
+
+  <div id="gallery" class="gallery"></div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" style="display:none;">
+    <span class="close">&times;</span>
+    <img src="" alt="Enlarged photo">
+    <button class="prev" onclick="changeImage(-1)">&#10094;</button>
+    <button class="next" onclick="changeImage(1)">&#10095;</button>
+  </div>
+
+<script>
+  const imageList = [
+   "DSC_0640.JPG",
+ "DSC_0633.JPG",
+ "DSC_0635.JPG",
+ "DSC_0637.JPG",
+ "DSC_0641.JPG",
+ "DSC_0643.JPG",
+ "DSC_0646.JPG",
+ "DSC_0649.JPG",
+ "DSC_0650.JPG",
+ "DSC_0652.JPG",
+ "DSC_0654.JPG",
+ "DSC_0657.JPG",
+ "DSC_0660.JPG",
+ "DSC_0662.JPG"
+  ];
+
+  const gallery = document.getElementById("gallery");
+  let currentImageIndex = 0;
+
+  // Add images to gallery
+  imageList.forEach((filename, index) => {
+    const photoDiv = document.createElement('div');
+    photoDiv.className = 'photo';
+    photoDiv.innerHTML = `
+      <img src="images/${filename}" alt="${filename}" data-index="${index}">
+      <a href="images/${filename}" download>Download</a>
+    `;
+    gallery.appendChild(photoDiv);
+  });
+
+  const lightbox = document.querySelector('.lightbox');
+  const lightboxImage = document.querySelector('.lightbox img');
+  const closeBtn = document.querySelector('.close');
+  const prevBtn = document.querySelector('.prev');
+  const nextBtn = document.querySelector('.next');
+
+  lightboxImage.addEventListener('click', (e) => {
+    e.stopPropagation();
+    lightboxImage.classList.toggle('zoomed');
+  });
+
+  const thumbnails = document.querySelectorAll('.gallery img');
+
+  thumbnails.forEach(thumbnail => {
+    thumbnail.addEventListener('click', openLightbox);
+  });
+
+  function openLightbox(event) {
+    event.preventDefault();
+    currentImageIndex = Number(event.target.dataset.index);
+    updateLightboxImage();
+    lightbox.style.display = 'flex';
+  }
+
+  function updateLightboxImage() {
+    lightboxImage.src = `images/${imageList[currentImageIndex]}`;
+  }
+
+  function closeLightbox() {
+    lightbox.style.display = 'none';
+  }
+
+  function changeImage(direction) {
+    currentImageIndex += direction;
+    if (currentImageIndex < 0) {
+      currentImageIndex = imageList.length - 1;
+    } else if (currentImageIndex >= imageList.length) {
+      currentImageIndex = 0;
+    }
+    updateLightboxImage();
+  }
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target === closeBtn) {
+      closeLightbox();
+    }
+  });
+</script>
+
+
+</body>
+</html>
